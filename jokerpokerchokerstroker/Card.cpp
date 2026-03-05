@@ -1,7 +1,8 @@
 #include "Card.h"
+using namespace std;
 
-std::string rankToString(int rank) {
-    if (rank <= 10) return std::to_string(rank);
+string rankToString(int rank) {
+    if (rank <= 10) return to_string(rank);
     if (rank == 11) return "J";
     if (rank == 12) return "Q";
     if (rank == 13) return "K";
@@ -9,7 +10,7 @@ std::string rankToString(int rank) {
     return "?";
 }
 
-std::string suitToString(Suit suit) {
+string suitToString(Suit suit) {
     switch (suit) {
         case HEARTS: return "H";
         case DIAMONDS: return "D";

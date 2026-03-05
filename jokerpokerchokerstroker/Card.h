@@ -1,6 +1,6 @@
 #ifndef CARD_H
 #define CARD_H
-
+using namespace std;
 #include <string>
 enum Suit { HEARTS, DIAMONDS, CLUBS, SPADES };
 enum Mod { EMPTY };
@@ -12,7 +12,7 @@ struct Card {
     Sticker sticker;
     Mod mod;
 };
-std::string rankToString(int rank);
-std::string suitToString(Suit suit);
+string rankToString(int rank);
+string suitToString(Suit suit);
 
 #endif

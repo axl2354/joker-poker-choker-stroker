@@ -1,7 +1,7 @@
-#ifndef JOKER_H
+/* #ifndef JOKER_H
 #define JOKER_H
 
-#include "HandEvaluator.h"
+#include "ScoringSystem.h"
 
 class Joker {
 public:
@@ -14,4 +14,4 @@ public:
     void apply(int& chips, int& mult, HandType type) override;
 };
 
-#endif
+#endif */

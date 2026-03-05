@@ -2,21 +2,41 @@
 #include "RunSession.h"
 #include "Deck.h"
 #include "Card.h"
+#include "hand.h"
+#include "ScoringSystem.h"
+using namespace std;
 
 void runSession()
 {
     Deck deck;
     deck.shuffle();
 
-    std::cout << "Your hand: ";
+    Hand hand;
+    Hand playedHand;
+    for (int i = 0; i < 8; i++)
+    {
+        hand.addCard(deck.draw());
+    }
+    cout << "Your hand:\n";
+    hand.print();
+
+    std::cout << "Choose 5 cards to play (enter indexes):\n";
 
     for (int i = 0; i < 5; i++)
     {
-        Card c = deck.draw();
-        std::cout << rankToString(c.rank)
-                  << suitToString(c.suit)
-                  << " ";
+        int index;
+        std::cin >> index;
+
+        playedHand.addCard(hand.getCards()[index]);
     }
 
-    std::cout << std::endl;
+    
+
+    
+    string result = ScoringSystem::evaluateHand(hand);
+
+    std::cout << "Played Hand: ";
+    playedHand.print();
+
+    cout << "Hand Type: " << result << endl;
 }

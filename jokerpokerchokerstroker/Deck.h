@@ -1,12 +1,12 @@
 #ifndef DECK_H
 #define DECK_H
-
+using namespace std;
 #include <vector>
 #include "Card.h"
 
 class Deck {
 private:
-    std::vector<Card> cards;
+    vector<Card> cards;
 
 public:
     Deck();
