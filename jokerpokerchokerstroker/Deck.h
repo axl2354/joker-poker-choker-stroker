@@ -2,7 +2,7 @@
 #define DECK_H
 
 #include <vector>
-#include "card.h"
+#include "Card.h"
 
 class Deck {
 private:
@@ -12,7 +12,7 @@ public:
     Deck();
     void shuffle();
     Card draw();
-    bool empty() const;
 };
+
 
 #endif

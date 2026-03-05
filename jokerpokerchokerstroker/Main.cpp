@@ -1,7 +1,7 @@
 #include "RunSession.h"
 
-int main() {
-    Game game;
-    game.start();
+int main()
+{
+    runSession();
     return 0;
 }

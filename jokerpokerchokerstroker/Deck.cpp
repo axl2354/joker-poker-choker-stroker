@@ -1,4 +1,4 @@
-#include "deck.h"
+#include "Deck.h"
 #include <algorithm>
 #include <random>
 
@@ -22,6 +22,5 @@ Card Deck::draw() {
     return c;
 }
 
-bool Deck::empty() const {
-    return cards.empty();
-}
+
+

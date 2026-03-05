@@ -1,24 +1,6 @@
-#ifndef GAME_H
-#define GAME_H
+#ifndef RUNSESSION_H
+#define RUNSESSION_H
 
-#include <vector>
-#include "Deck.h"
-#include "Joker.h"
-
-class Game {
-private:
-    Deck deck;
-    std::vector<Card> currentHand;
-    std::vector<Joker*> jokers;
-
-    int totalScore;
-
-public:
-    Game();
-    void start();
-    void playRound();
-    void drawHand();
-    void scoreHand();
-};
+void runSession();
 
 #endif
