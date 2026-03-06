@@ -24,3 +24,12 @@ const vector<Card>& Hand::getCards() const
 {
     return cards;
 }
+void Hand::removeCard(int index)
+{
+    cards.erase(cards.begin() + index);
+}
+
+int Hand::size() const
+{
+    return cards.size();
+}

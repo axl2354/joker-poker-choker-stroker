@@ -3,11 +3,18 @@
 
 #include "Hand.h"
 #include <string>
+struct Score
+{
+    std::string handName;
+    int chips;
+    int mult;
 
+    std::vector<int> scoringIndexes;
+};
 class ScoringSystem
 {
 public:
-    static std::string evaluateHand(const Hand& hand);
+    static Score evaluateHand(const Hand& hand);
 };
 
 #endif
