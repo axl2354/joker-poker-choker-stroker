@@ -3,6 +3,9 @@
 
 #include "Hand.h"
 #include <string>
+#include <vector>
+#include "toker/IModifier.h"
+
 struct Score
 {
     std::string handName;
@@ -14,6 +17,7 @@ struct Score
 class ScoringSystem
 {
 public:
+    static std::vector<IModifier*> modifiers;
     static Score evaluateHand(const Hand& hand);
 };
 

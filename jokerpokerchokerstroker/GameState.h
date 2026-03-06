@@ -1,8 +1,11 @@
 #ifndef GAMESTATE_H
 #define GAMESTATE_H
 
+#pragma once
+#include <vector>
 #include "Deck.h"
 #include "Hand.h"
+#include "toker/IModifier.h"
 
 struct GameState
 {
@@ -13,6 +16,9 @@ struct GameState
     int discardsRemaining;
 
     int totalScore;
+    int money;
+
+    std::vector<IModifier*> tokers;
 };
 
 #endif

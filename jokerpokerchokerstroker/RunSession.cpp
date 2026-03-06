@@ -6,7 +6,11 @@
 #include "hand.h"
 #include "ScoringSystem.h"
 #include "GameState.h"
+#include "ModifierFactory.h"
+#include "ShopSystem.h"
 using namespace std;
+vector<int> blinds = {100, 250, 600};
+vector<string> blindNames = {"Small Blind", "Big Blind", "Boss Blind"};
 Hand selectCards(Hand &hand)
 {
     int amount;
@@ -14,8 +18,10 @@ Hand selectCards(Hand &hand)
     cout << "How many cards to play? ";
     cin >> amount;
 
-    if (amount <= 0) amount = 1;
-    if (amount > hand.size()) amount = hand.size();
+    if (amount <= 0)
+        amount = 1;
+    if (amount > hand.size())
+        amount = hand.size();
 
     Hand played;
     vector<int> indexes;
@@ -45,7 +51,8 @@ void discardCards(Hand &hand, Deck &deck)
     cout << "How many cards to discard? ";
     cin >> amount;
 
-    if (amount <= 0) return;
+    if (amount <= 0)
+        return;
 
     if (amount > hand.size())
         amount = hand.size();
@@ -79,61 +86,99 @@ void drawUpTo(Hand &hand, Deck &deck, int targetSize)
 void runSession()
 {
     GameState game;
+    game.money = 10;
 
     game.deck.shuffle();
 
-    game.handsRemaining = 3;
-    game.discardsRemaining = 3;
-    game.totalScore = 0;
-    int totalScore = 0;
-
+    // starting hand
     for (int i = 0; i < 8; i++)
         game.hand.addCard(game.deck.draw());
 
-    while (game.handsRemaining > 0)
+    for (int b = 0; b < blinds.size(); b++)
     {
-        cout << "\nYour hand:\n";
-        game.hand.print();
+        int target = blinds[b];
+        int roundScore = 0;
 
-        cout << "\nHands: " << game.handsRemaining
-             << "  Discards: " << game.discardsRemaining << endl;
+        game.handsRemaining = 3;
+        game.discardsRemaining = 3;
 
-        cout << "\nChoose action:\n";
-        cout << "1 - Play Hand\n";
-        cout << "2 - Discard\n";
+        cout << "\n====================\n";
+        cout << blindNames[b] << endl;
+        cout << "Target Score: " << target << endl;
+        cout << "====================\n";
 
-        int choice;
-        cin >> choice;
-        if (choice == 1)
+        while (game.handsRemaining > 0 && roundScore < target)
         {
-            Hand played = selectCards(game.hand);
+            cout << "\nCurrent Score: " << roundScore << "/" << target << endl;
 
-            Score score = ScoringSystem::evaluateHand(played);
+            cout << "\nYour hand:\n";
+            game.hand.print();
 
-            int finalScore = score.chips * score.mult;
-            totalScore += finalScore;
+            cout << "\nHands: " << game.handsRemaining
+                 << "  Discards: " << game.discardsRemaining << endl;
 
-            cout << "Played: ";
-            played.print();
+            cout << "\nChoose action:\n";
+            cout << "1 - Play Hand\n";
+            cout << "2 - Discard\n";
 
-            cout << "Hand: " << score.handName << endl;
-            cout << "Score: " << finalScore << endl;
+            int choice;
+            cin >> choice;
 
-            drawUpTo(game.hand, game.deck, 8);
-
-            game.handsRemaining--;
-        }
-        else if (choice == 2)
-        {
-            if (game.discardsRemaining <= 0)
+            if (choice == 1)
             {
-                cout << "No discards left!\n";
-                continue;
+                Hand played = selectCards(game.hand);
+
+                Score score = ScoringSystem::evaluateHand(played);
+
+                for (auto t : game.tokers)
+                {
+                    t->apply(score);
+                }
+                int finalScore = score.chips * score.mult;
+
+                roundScore += finalScore;
+
+                cout << "Played: ";
+                played.print();
+
+                cout << "Hand: " << score.handName << endl;
+                cout << "Chips: " << score.chips
+                     << "  Mult: " << score.mult << endl;
+
+                cout << "Score: " << finalScore << endl;
+
+                drawUpTo(game.hand, game.deck, 8);
+
+                game.handsRemaining--;
             }
 
-            discardCards(game.hand, game.deck);
-            game.discardsRemaining--;
+            else if (choice == 2)
+            {
+                if (game.discardsRemaining <= 0)
+                {
+                    cout << "No discards left!\n";
+                    continue;
+                }
+
+                discardCards(game.hand, game.deck);
+                game.discardsRemaining--;
+            }
         }
+
+        if (roundScore >= target)
+        {
+            cout << "\nBlind Cleared!\n";
+            ShopSystem::openShop(game);
+        }
+        else
+        {
+            cout << "\nYou failed the blind.\n";
+            cout << "Game Over\n";
+            return;
+        }
+        
     }
-    cout << "\nFinal Score: " << totalScore << endl;
+
+    cout << "\nYou cleared all blinds!\n";
+    cout << "Victory!\n";
 }

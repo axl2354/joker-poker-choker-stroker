@@ -2,6 +2,9 @@
 #include <map>
 #include <algorithm>
 using namespace std;
+#include "ModifierFactory.h"
+
+std::vector<IModifier*> ScoringSystem::modifiers;
 int getCardChips(const Card &c)
 {
     if (c.rank <= 10)
@@ -17,7 +20,9 @@ int getCardChips(const Card &c)
         return 11; // A
 
     return 0;
+
 }
+
 Score ScoringSystem::evaluateHand(const Hand &hand)
 {
     Score result = {"", 0, 1};
@@ -170,6 +175,6 @@ Score ScoringSystem::evaluateHand(const Hand &hand)
 
     for (int index : result.scoringIndexes)
         result.chips += getCardChips(cards[index]);
-
+    
     return result;
 }
